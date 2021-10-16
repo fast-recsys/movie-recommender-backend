@@ -10,4 +10,4 @@ class RecommendationRequest(BaseModel):
 
 class Movie(BaseModel):
     movie_id: int
-    name: str
+    imdb_id: str
