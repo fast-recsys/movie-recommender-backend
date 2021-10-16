@@ -7,3 +7,7 @@ class UserRating(BaseModel):
 
 class RecommendationRequest(BaseModel):
     user_ratings: List[UserRating]
+
+class Movie(BaseModel):
+    movie_id: int
+    name: str
