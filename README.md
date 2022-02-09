@@ -12,30 +12,42 @@ $ uvicorn main:app --reload
 
 ## Endpoints
 
-
-### Get random movies for user to rate
+### Create a user
 
 ```
-GET /movies?shuffle=True&limit=3
+POST /users
+
+Response:
+{
+  id: 123
+}
+```
+
+The ID returned by the endpoint can be used for user-specific operations, e.g. rating new movies and generating recommendations.
+
+### Get movies not rated by a user
+
+```
+GET /users/{id}/unrated
 
 Response:
 {
   movies: [
-    { "movie_id": 1, "movie_name": "One Flew Over the Cukoo's Next" },
-    { "movie_id": 2, "movie_name": "One Flew Over the Cukoo's Next" },
-    ...
-    { "movie_id": 3, "movie_name": "One Flew Over the Cukoo's Next" }
+    { "movie_id": 1, "movie_name": "Movie 1" },
+    { "movie_id": 2, "movie_name": "Movie 2" },
+    { "movie_id": 3, "movie_name": "Movie 3" }
   ]
 }
 ```
 
+The endpoint returns 3 movies not rated by the user at a time. Each time the endpoint is hit, a different set of movies is returned (i.e. the movies are shuffled).
+
 ### Get details of single movie
 
 ```
-GET /movies/{movie_id}
+GET /movies/{id}
 
 Response:
-
 {
   "imdbId": 123,
   "thumbnailUrl": "https://...",
@@ -43,23 +55,52 @@ Response:
 }
 ```
 
-### Get movie recommendations
+### Store user movie ratings
 
 ```
-POST /recommend
+POST /users/{id}/ratings
 
-Sample payload:
+Payload:
 {
-  "user_ratings": [
-    { "movie_id": 15, "rating": 1 },
-    { "movie_id": 16, "rating": 1 },
-    { "movie_id": 18, "rating": 5 },
-    { "movie_id": 19, "rating": 4 },
-    { "movie_id": 242, "rating": 3 }
+  ratings: [
+    { "movie_id": 1, "rating": 4 },
+    { "movie_id": 2, "rating": 1 },
+    { "movie_id": 3, "rating": 5 }
   ]
 }
+```
+
+### Get user movie ratings
 
 ```
+GET /users/{id}/ratings
+
+Response:
+{
+  ratings: [
+    { "movie_id": 1, "rating": 4 },
+    { "movie_id": 2, "rating": 1 },
+    { "movie_id": 3, "rating": 5 }
+  ]
+}
+```
+
+### Get movie recommendations for a user
+
+```
+GET /users/{id}/recommendations?top=3
+
+Response:
+{
+  recommendations: [
+    { "movie_id": 1, "movie_name": "Movie 1", "match": 0.987 },
+    { "movie_id": 2, "movie_name": "Movie 2", "match": 0.727 },
+    { "movie_id": 3, "movie_name": "Movie 3", "match": 0.589 },
+  ]
+}
+```
+
+The endpoint returns 3 recommendations by default unless an explicit number is specified using the `top` query parameter.
 
 ## Todo
 
