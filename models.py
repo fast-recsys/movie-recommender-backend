@@ -5,8 +5,8 @@ class UserRating(BaseModel):
     movie_id: int
     rating: int
 
-class RecommendationRequest(BaseModel):
-    user_ratings: List[UserRating]
+class SaveRatingsRequest(BaseModel):
+    ratings: List[UserRating]
 
 class Movie(BaseModel):
     movie_id: int
