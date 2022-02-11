@@ -33,9 +33,9 @@ GET /users/{id}/unrated
 Response:
 {
   movies: [
-    { "movie_id": 1, "movie_name": "Movie 1" },
-    { "movie_id": 2, "movie_name": "Movie 2" },
-    { "movie_id": 3, "movie_name": "Movie 3" }
+    { "id": 1, "title": "Movie 1", thumbnail_url: "...", genres: ["..."] },
+    { "id": 2, "title": "Movie 2", thumbnail_url: "...", genres: ["..."] },
+    { "id": 3, "title": "Movie 3", thumbnail_url: "...", genres: ["..."] }
   ]
 }
 ```
@@ -49,7 +49,8 @@ GET /movies/{id}
 
 Response:
 {
-  "imdbId": 123,
+  "id": 123,
+  "title": "Movie title",
   "thumbnailUrl": "https://...",
   "genres": ["...", ".."]
 }
