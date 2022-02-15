@@ -10,8 +10,9 @@ POST http://localhost:8000/users
 
 
 ### Get user details
+@USER_ID=620c176fd471de40917c4180
 
-GET http://localhost:8000/users/620be1443452a08f0d4ffe04
+GET http://localhost:8000/users/{{USER_ID}}
 
 ### Unknown user
 
@@ -25,3 +26,29 @@ GET http://localhost:8000/movies/1
 ### Unknown movie
 
 GET http://localhost:8000/movies/0
+
+
+### Get unrated movies
+
+GET http://localhost:8000/users/{{USER_ID}}/unrated
+
+
+### Save ratings
+
+POST http://localhost:8000/users/{{USER_ID}}/ratings
+
+{
+    "ratings": [
+        {"movie_id": 3, "rating": 5},
+        {"movie_id": 2, "rating": 4}
+    ]
+}
+
+
+### Get saved ratings
+
+
+GET http://localhost:8000/users/{{USER_ID}}/ratings
+
+
+### Get recommendations

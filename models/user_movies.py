@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from models.movie import MoviePublic
+from models.movie import MovieBase, MoviePublic
 
 # Response for unrated movies
 
@@ -21,7 +21,7 @@ class MovieRatingPayload(BaseModel):
 # Response for getting rated movies
 
 class MovieRatingPublic(BaseModel):
-  movie: MoviePublic
+  movie: MovieBase
   rating: int = Field(..., ge=1, le=5)
 
 class MovieRatingResponse(BaseModel):
