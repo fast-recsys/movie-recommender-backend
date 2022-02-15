@@ -1,0 +1,18 @@
+
+### Health endpoint
+
+GET http://localhost:8000
+
+
+### Create a user
+
+POST http://localhost:8000/users
+
+
+### Get user details
+
+GET http://localhost:8000/users/620be1443452a08f0d4ffe04
+
+### Unknown user
+
+GET http://localhost:8000/users/random

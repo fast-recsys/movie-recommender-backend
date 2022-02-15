@@ -1,18 +1,8 @@
 from fastapi import FastAPI
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 from routers.users import router as user_router
 from routers.movies import router as movie_router
 from routers.user_movies import router as user_movies_router
-
-from config import get_settings
-settings = get_settings()
-
-motor_client = AsyncIOMotorClient(settings.mongodb_url)
-database = motor_client[settings.mongodb_dbname]
-
-def get_database() -> AsyncIOMotorDatabase:
-    return database
 
 app = FastAPI()
 
