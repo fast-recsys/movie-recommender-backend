@@ -7,5 +7,3 @@ class MovieBase(BaseModel):
 
 class MoviePublic(MovieBase):
   thumbnail_url: HttpUrl
-  genres: List[str]
-

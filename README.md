@@ -24,6 +24,12 @@ Update the `.env` file with the connection URL:
 MONGODB_URL="mongodb://localhost:27017"
 ```
 
+### TMDB integration
+
+To fetch URLs for movie posters, you need to get a free TMDB API key (See: https://developers.themoviedb.org/3/getting-started) and set it as the value for `TMDB_API_KEY` in the `.env` file.
+
+See https://developers.themoviedb.org/3/configuration/get-api-configuration for more details about the `TMDB_IMAGES_BASE_URL` key.
+
 ## Endpoints
 
 ### Create a user

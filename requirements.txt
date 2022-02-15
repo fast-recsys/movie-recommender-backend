@@ -1,6 +1,7 @@
 anyio==3.3.2
 asgiref==3.4.1
 attrs==21.2.0
+autopep8==1.6.0
 blis==0.7.4
 catalogue==2.0.6
 certifi==2021.10.8
@@ -14,7 +15,9 @@ fastcore==1.3.26
 fastdownload==0.0.5
 fastprogress==1.0.0
 h11==0.12.0
+httpcore==0.14.7
 httptools==0.2.0
+httpx==0.22.0
 idna==3.2
 iniconfig==1.1.1
 Jinja2==3.0.2
@@ -34,6 +37,7 @@ pip==21.2.4
 pluggy==0.13.1
 preshed==3.0.5
 py==1.10.0
+pycodestyle==2.8.0
 pydantic==1.8.2
 pymongo==3.12.3
 pyparsing==3.0.4
@@ -43,6 +47,7 @@ python-dotenv==0.19.1
 pytz==2021.3
 PyYAML==5.4.1
 requests==2.26.0
+rfc3986==1.5.0
 scikit-learn==1.0
 scipy==1.7.1
 setuptools==58.0.4

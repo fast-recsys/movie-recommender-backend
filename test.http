@@ -16,3 +16,12 @@ GET http://localhost:8000/users/620be1443452a08f0d4ffe04
 ### Unknown user
 
 GET http://localhost:8000/users/random
+
+
+### Get movie details
+
+GET http://localhost:8000/movies/1
+
+### Unknown movie
+
+GET http://localhost:8000/movies/0
