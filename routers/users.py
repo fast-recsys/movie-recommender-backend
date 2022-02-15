@@ -36,6 +36,4 @@ async def get_user_or_404(
 async def get_user_details(
     user: UserDB = Depends(get_user_or_404)
 ) -> UserPublic:
-    user_public = UserPublic.from_userdb(user)
-    print(user_public)
-    return user_public
+    return UserPublic(**user.dict(by_alias=True), movies_rated_count=len(user.ratings))
