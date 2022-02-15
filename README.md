@@ -10,6 +10,20 @@ Start the server locally:
 $ uvicorn main:app --reload
 ```
 
+### Connection to database
+
+You need to have an instance of MongoDB running. The easiest way to do this is using Docker:
+
+```
+$ docker run -p 27017:27017 mongo
+```
+
+Update the `.env` file with the connection URL:
+
+```
+MONGODB_URL="mongodb://localhost:27017"
+```
+
 ## Endpoints
 
 ### Create a user
