@@ -1,9 +1,12 @@
 from fastapi import APIRouter, Depends, status
-from data import get_local_movie_details, get_unrated_movie_details
-from models.user import UserDB
+from motor.motor_asyncio import AsyncIOMotorDatabase
 
+from models.user import UserDB
 from models.user_movies import MovieRating, MovieRatingPayload, MovieRatingPublic, MovieRatingResponse, RecommendationResponse, UnratedMoviesResponse
 from routers.users import get_user_or_404
+from data import get_local_movie_details, get_unrated_movie_details
+from db import get_database
+from config import Settings, get_settings
 
 router = APIRouter()
 
@@ -16,8 +19,20 @@ async def get_unrated_movies(
     return UnratedMoviesResponse(movies=movies)
 
 @router.post("/{id}/ratings", status_code=status.HTTP_204_NO_CONTENT)
-async def save_ratings(payload: MovieRatingPayload):
-    return
+async def save_ratings(
+    payload: MovieRatingPayload,
+    user: UserDB = Depends(get_user_or_404),
+    db: AsyncIOMotorDatabase = Depends(get_database),
+    settings: Settings = Depends(get_settings)
+) -> None:
+
+    user_ratings = list(map(lambda x: x.dict(), payload.ratings))
+
+    await db[settings.mongodb_users_collection_name].update_one(
+        {"_id": user.id},
+        {"$push": { "ratings": { "$each": user_ratings } }}
+    )
+
 
 @router.get("/{id}/ratings")
 async def get_ratings(

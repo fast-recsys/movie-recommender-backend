@@ -62,4 +62,4 @@ async def get_unrated_movie_details(
 def get_local_movie_details(id: int) -> MovieBase:
     df = get_local_movie_df()
     df = df.loc[df['movieId'] == id]
-    return MovieBase(id=df.loc[0, "movieId"], title=df.loc[0, 'title'])
+    return MovieBase(id=df.values[0][0], title=df.values[0][1])
