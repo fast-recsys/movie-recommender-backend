@@ -1,3 +1,4 @@
+"""main module for movie-recommender-backend-project"""
 from fastapi import FastAPI
 
 from routers.users import router as user_router

@@ -1,3 +1,4 @@
+"""Router API for user API"""
 from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
@@ -16,6 +17,7 @@ async def create_user(
     db: AsyncIOMotorDatabase = Depends(get_database),
     settings: Settings = Depends(get_settings),
 ) -> UserCreateResponse:
+    """Insert a new user into Mongodb collection"""
     user_db = UserDB()
     await db[settings.mongodb_users_collection_name].insert_one(
         user_db.dict(by_alias=True)
@@ -31,6 +33,7 @@ async def get_user_or_404(
     db: AsyncIOMotorDatabase = Depends(get_database),
     settings: Settings = Depends(get_settings),
 ) -> UserDB:
+    """Check if a user corresponding to id exists or not"""
     user = await db[settings.mongodb_users_collection_name].find_one({"_id": id})
 
     if user is None:
@@ -41,4 +44,5 @@ async def get_user_or_404(
 
 @router.get("/{id}")
 async def get_user_details(user: UserDB = Depends(get_user_or_404)) -> UserPublic:
+    """Get user details according to an id"""
     return UserPublic(**user.dict(by_alias=True), movies_rated_count=len(user.ratings))
