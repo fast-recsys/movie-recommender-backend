@@ -10,20 +10,26 @@ from models.user import UserCreateResponse, UserDB, UserPublic
 
 router = APIRouter()
 
+
 @router.post("", status_code=status.HTTP_201_CREATED)
 async def create_user(
     db: AsyncIOMotorDatabase = Depends(get_database),
-    settings: Settings = Depends(get_settings)
+    settings: Settings = Depends(get_settings),
 ) -> UserCreateResponse:
     user_db = UserDB()
-    await db[settings.mongodb_users_collection_name].insert_one(user_db.dict(by_alias=True))
-    user = await db[settings.mongodb_users_collection_name].find_one({"_id": user_db.id})
+    await db[settings.mongodb_users_collection_name].insert_one(
+        user_db.dict(by_alias=True)
+    )
+    user = await db[settings.mongodb_users_collection_name].find_one(
+        {"_id": user_db.id}
+    )
     return UserCreateResponse(**user)
+
 
 async def get_user_or_404(
     id: ObjectId = Depends(get_object_id),
     db: AsyncIOMotorDatabase = Depends(get_database),
-    settings: Settings = Depends(get_settings)
+    settings: Settings = Depends(get_settings),
 ) -> UserDB:
     user = await db[settings.mongodb_users_collection_name].find_one({"_id": id})
 
@@ -32,8 +38,7 @@ async def get_user_or_404(
 
     return UserDB(**user)
 
+
 @router.get("/{id}")
-async def get_user_details(
-    user: UserDB = Depends(get_user_or_404)
-) -> UserPublic:
+async def get_user_details(user: UserDB = Depends(get_user_or_404)) -> UserPublic:
     return UserPublic(**user.dict(by_alias=True), movies_rated_count=len(user.ratings))
