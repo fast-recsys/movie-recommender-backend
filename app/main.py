@@ -1,9 +1,9 @@
 """main module for movie-recommender-backend-project"""
 from fastapi import FastAPI
 
-from routers.users import router as user_router
-from routers.movies import router as movie_router
-from routers.user_movies import router as user_movies_router
+from app.routers.users import router as user_router
+from app.routers.movies import router as movie_router
+from app.routers.user_movies import router as user_movies_router
 
 app = FastAPI()
 
