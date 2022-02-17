@@ -1,12 +1,12 @@
 from fastapi import APIRouter, Depends, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
-from models.user import UserDB
-from models.user_movies import MovieRating, MovieRatingPayload, MovieRatingPublic, MovieRatingResponse, RecommendationResponse, UnratedMoviesResponse
-from routers.users import get_user_or_404
-from data import get_local_movie_details, get_unrated_movie_details
-from db import get_database
-from config import Settings, get_settings
+from app.models.user import UserDB
+from app.models.user_movies import MovieRating, MovieRatingPayload, MovieRatingPublic, MovieRatingResponse, RecommendationResponse, UnratedMoviesResponse
+from app.routers.users import get_user_or_404
+from app.data import get_local_movie_details, get_unrated_movie_details
+from app.db import get_database
+from app.config import Settings, get_settings
 
 router = APIRouter()
 

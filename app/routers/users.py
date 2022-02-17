@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from bson import ObjectId
 
-from db import get_database
-from config import Settings, get_settings
-from models.mongo import get_object_id
+from app.db import get_database
+from app.config import Settings, get_settings
+from app.models.mongo import get_object_id
 
-from models.user import UserCreateResponse, UserDB, UserPublic
+from app.models.user import UserCreateResponse, UserDB, UserPublic
 
 router = APIRouter()
 

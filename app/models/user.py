@@ -1,8 +1,8 @@
 from typing import List
 from pydantic import BaseModel, Field
-from models.mongo import MongoBaseModel, PyObjectId
+from app.models.mongo import MongoBaseModel, PyObjectId
 
-from models.user_movies import MovieRating
+from app.models.user_movies import MovieRating
 
 class UserBase(MongoBaseModel):
   pass

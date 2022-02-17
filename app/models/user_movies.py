@@ -1,6 +1,6 @@
 from typing import List
 from pydantic import BaseModel, Field
-from models.movie import MovieBase, MoviePublic
+from app.models.movie import MovieBase, MoviePublic
 
 # Response for unrated movies
 

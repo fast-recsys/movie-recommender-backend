@@ -1,8 +1,8 @@
 from typing import Optional
 from fastapi import APIRouter, Depends, status, HTTPException
-from data import get_movie_details
 
-from models.movie import MoviePublic
+from app.data import get_movie_details
+from app.models.movie import MoviePublic
 
 router = APIRouter()
 

@@ -4,18 +4,20 @@ from fastapi import Depends
 import pandas as pd
 import httpx
 
-from config import Settings, get_settings
+from app.config import Settings, get_settings
 
-from models.movie import MovieBase, MoviePublic
+from app.models.movie import MovieBase, MoviePublic
 
 @lru_cache
 def get_movie_df() -> Any:
-    df_movies = pd.read_csv('./input/links.csv')
+    # TODO: Use calculated current path
+    df_movies = pd.read_csv('./app/input/links.csv')
     return df_movies
 
 @lru_cache
 def get_local_movie_df() -> Any:
-    df = pd.read_csv('./input/movies.csv')
+    # TODO: Use calculated current path
+    df = pd.read_csv('./app/input/movies.csv')
     return df
 
 async def get_movie_details_from_tmdb(
