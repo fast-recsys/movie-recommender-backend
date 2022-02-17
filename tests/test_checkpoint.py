@@ -1,4 +1,4 @@
-from ..test_main import client
+from app.test_main import client
 
 
 def test_checkpoint():
