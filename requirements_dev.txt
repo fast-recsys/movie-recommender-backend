@@ -1,3 +1,6 @@
+# code formatters/linters
 black
-pytest
 pylint
+pycodestyle
+# unit-testing
+pytest
