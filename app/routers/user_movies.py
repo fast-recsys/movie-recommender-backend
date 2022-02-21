@@ -56,4 +56,5 @@ async def get_ratings(user: UserDB = Depends(get_user_or_404)) -> MovieRatingRes
 
 @router.get("/{id}/recommendations")
 def get_recommendations_for_user(id: int) -> RecommendationResponse:
+    #TODO: add top parameter
     return RecommendationResponse(recommendations=[])
