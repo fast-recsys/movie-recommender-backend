@@ -7,7 +7,7 @@
 Start the server locally:
 
 ```shell
-$ uvicorn main:app --reload
+$ uvicorn app.main:app --reload
 ```
 
 ### Connection to database
