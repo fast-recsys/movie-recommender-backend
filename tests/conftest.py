@@ -5,6 +5,16 @@ import httpx
 import pytest
 from asgi_lifespan import LifespanManager
 
+# Override configuration variables for tests
+import os
+
+os.environ["MONGODB_URL"] = "mongodb://localhost:27017"
+os.environ["MONGODB_DBNAME"] = "movie-rec"
+os.environ["MONGODB_USERS_COLLECTION_NAME"] = "users"
+os.environ["TMDB_BASE_URL"] = ""
+os.environ["TMDB_IMAGES_BASE_URL"] = ""
+os.environ["TMDB_API_KEY"] = ""
+
 from app.main import app
 
 @pytest.fixture(scope="session")
