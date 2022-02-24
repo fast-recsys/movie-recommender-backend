@@ -23,7 +23,7 @@ def event_loop():
   yield loop
   loop.close()
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 async def test_client():
   async with LifespanManager(app):
     async with httpx.AsyncClient(app=app, base_url="http://test") as test_client:
