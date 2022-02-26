@@ -22,6 +22,11 @@ def get_local_movie_df() -> Any:
     df = pd.read_csv("./app/input/movies.csv")
     return df
 
+@lru_cache
+def get_local_movie_recommendations_df() -> Any:
+    df = pd.read_csv("./app/input/ratings.csv")
+    return df
+
 
 async def get_movie_details_from_tmdb(
     tmdbId: int, settings: Settings = Depends(get_settings)
