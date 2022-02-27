@@ -11,9 +11,10 @@ from app.models.user_movies import (
     UnratedMoviesResponse,
 )
 from app.routers.users import get_user_or_404
-from app.data import get_local_movie_details, get_unrated_movie_details
+from app.data import get_local_movie_details, get_unrated_movie_details, get_movie_details_from_tmdb
 from app.db import get_database
 from app.config import Settings, get_settings
+from app.inference import get_recommendations
 
 router = APIRouter()
 
@@ -55,6 +56,10 @@ async def get_ratings(user: UserDB = Depends(get_user_or_404)) -> MovieRatingRes
 
 
 @router.get("/{id}/recommendations")
-def get_recommendations_for_user(id: int) -> RecommendationResponse:
-    #TODO: add top parameter
-    return RecommendationResponse(recommendations=[])
+async def get_recommendations_for_user(user: UserDB = Depends(get_user_or_404),
+) -> RecommendationResponse:
+
+    top5_ratings = get_recommendations(user.ratings)
+
+    recommendation_response = [await get_movie_details_from_tmdb(tmdbId) for tmdbId in top5_ratings]
+    return RecommendationResponse(recommendations=recommendation_response)

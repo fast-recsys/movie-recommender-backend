@@ -38,7 +38,7 @@ class MovieRatingResponse(BaseModel):
 
 class MovieRecommendation(BaseModel):
     movie: MoviePublic
-    match: float = Field(..., ge=0, le=1)
+    # match: float = Field(..., ge=0, le=1)
 
 
 class RecommendationResponse(BaseModel):
