@@ -5,7 +5,7 @@ from torch import nn
 from app.models.user_movies import MovieRating
 from app.data import get_local_movie_recommendations_df
 
-learn = load_learner("ml_model/movie-recommender.pkl")
+learn = load_learner("app/ml_model/movie-recommender.pkl")
 
 def get_recommendations(user_movie_matrix: list[MovieRating]):
     # corresponding to userid get rating
@@ -34,9 +34,12 @@ def get_recommendations(user_movie_matrix: list[MovieRating]):
 
     user_biases = learn.u_bias.weight[1+top5.indices,:]
     new_user_bias = user_biases.mean()
-    pred_ratings = torch.matmul(new_user_vector, xlearn.i_weight.weight.T) + xlearn.i_bias.weight.T + new_user_bias
+    pred_ratings = torch.matmul(new_user_vector, learn.i_weight.weight.T) + learn.i_bias.weight.T + new_user_bias
     top5_ratings = pred_ratings.topk(5)
 
-    # recommendations = learn.classes['title'][top5_ratings.indices.tolist()[0]]
+    recommended_titles = learn.classes['title'][top5_ratings.indices.tolist()[0]]
 
-    return top5_ratings
+    # TODO: Use to return "match" to UI
+    prediction_confidence = top5.values.tolist()
+
+    return recommended_titles

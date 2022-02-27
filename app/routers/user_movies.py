@@ -7,11 +7,12 @@ from app.models.user_movies import (
     MovieRatingPayload,
     MovieRatingPublic,
     MovieRatingResponse,
+    MovieRecommendation,
     RecommendationResponse,
     UnratedMoviesResponse,
 )
 from app.routers.users import get_user_or_404
-from app.data import get_local_movie_details, get_unrated_movie_details, get_movie_details_from_tmdb
+from app.data import get_local_movie_details, get_local_movie_df, get_movie_df, get_unrated_movie_details, get_movie_details_from_tmdb
 from app.db import get_database
 from app.config import Settings, get_settings
 from app.inference import get_recommendations
@@ -54,12 +55,23 @@ async def get_ratings(user: UserDB = Depends(get_user_or_404)) -> MovieRatingRes
     user_ratings = list(map(make_public_movie_rating, user.ratings))
     return MovieRatingResponse(ratings=user_ratings)
 
+def id_to_tmdb_id(id: int) -> int:
+    df_movies = get_movie_df()
+    movie_row = df_movies.loc[df_movies["movieId"] == id]
+    tmdb_id = int(movie_row["tmdbId"])
+    return tmdb_id
 
 @router.get("/{id}/recommendations")
-async def get_recommendations_for_user(user: UserDB = Depends(get_user_or_404),
+async def get_recommendations_for_user(
+    user: UserDB = Depends(get_user_or_404),
+    settings: Settings = Depends(get_settings)
 ) -> RecommendationResponse:
 
-    top5_ratings = get_recommendations(user.ratings)
+    recommended_titles = get_recommendations(user.ratings)
+    df_movies = get_local_movie_df()
+    df_recommended = df_movies.loc[df_movies['title'].isin(recommended_titles)]
+    
+    tmdb_ids = [id_to_tmdb_id(r[0]) for _, r in df_recommended.iterrows()]
 
-    recommendation_response = [await get_movie_details_from_tmdb(tmdbId) for tmdbId in top5_ratings]
-    return RecommendationResponse(recommendations=recommendation_response)
+    recommendations = [await get_movie_details_from_tmdb(tmdbId, settings) for tmdbId in tmdb_ids]
+    return RecommendationResponse(recommendations=[MovieRecommendation(movie=movie) for movie in recommendations])
