@@ -38,9 +38,6 @@ def mock_get_movie_details_from_tmdb() -> MoviePublic:
 @pytest.fixture(scope="module")
 async def test_client():
 
-  app.dependency_overrides[get_movie_df] = mock_get_movie_df
-  app.dependency_overrides[get_movie_details_from_tmdb] = mock_get_movie_details_from_tmdb
-
   async with LifespanManager(app):
     async with httpx.AsyncClient(app=app, base_url="http://test") as test_client:
       yield test_client
