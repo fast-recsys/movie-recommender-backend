@@ -7,6 +7,6 @@ settings = get_settings()
 motor_client = AsyncIOMotorClient(settings.mongodb_url)
 database = motor_client[settings.mongodb_dbname]
 
+
 def get_database() -> AsyncIOMotorDatabase:
     return database
-

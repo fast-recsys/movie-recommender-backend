@@ -8,34 +8,43 @@ from app.config import Settings, get_settings
 
 from app.models.movie import MovieBase, MoviePublic
 
+
 @lru_cache
 def get_movie_df() -> Any:
     # TODO: Use calculated current path
-    df_movies = pd.read_csv('./app/input/links.csv')
+    df_movies = pd.read_csv("./app/input/links.csv")
     return df_movies
+
 
 @lru_cache
 def get_local_movie_df() -> Any:
     # TODO: Use calculated current path
-    df = pd.read_csv('./app/input/movies.csv')
+    df = pd.read_csv("./app/input/movies.csv")
     return df
 
+@lru_cache
+def get_local_movie_recommendations_df() -> Any:
+    df = pd.read_csv("./app/input/ratings.csv")
+    return df
+
+
 async def get_movie_details_from_tmdb(
-    tmdbId: int,
-    settings: Settings = Depends(get_settings)
+    tmdbId: int, settings: Settings = Depends(get_settings)
 ) -> MoviePublic:
     print(settings)
     async with httpx.AsyncClient() as client:
-        response = await client.get(settings.tmdb_base_url + f"/movie/{tmdbId}?api_key={settings.tmdb_api_key}")
+        response = await client.get(
+            settings.tmdb_base_url + f"/movie/{tmdbId}?api_key={settings.tmdb_api_key}"
+        )
         response_json = response.json()
-        return MoviePublic(id=tmdbId, title=response_json['original_title'], thumbnail_url=f"{settings.tmdb_images_base_url}{response_json['poster_path']}")
+        return MoviePublic(
+            id=tmdbId,
+            title=response_json["original_title"],
+            thumbnail_url=f"{settings.tmdb_images_base_url}{response_json['poster_path']}",
+        )
 
 
-
-async def get_movie_details(
-    id: int,
-    df_movies=Depends(get_movie_df)
-) -> MoviePublic:
+async def get_movie_details(id: int, df_movies=Depends(get_movie_df)) -> MoviePublic:
 
     movie_row = df_movies.loc[df_movies["movieId"] == id]
     tmdbId = int(movie_row["tmdbId"])
@@ -48,20 +57,19 @@ async def get_movie_details(
 
 
 async def get_unrated_movie_details(
-    movies_rated: List[int],
-    df_movies=get_movie_df()
+    movies_rated: List[int], df_movies=get_movie_df()
 ) -> List[MoviePublic]:
-    
-    unrated_df = df_movies[~df_movies['movieId'].isin(movies_rated)]
+
+    unrated_df = df_movies[~df_movies["movieId"].isin(movies_rated)]
 
     unrated_df = unrated_df.sample(3)
 
-    unrated_movie_ids = list(unrated_df['movieId'])
+    unrated_movie_ids = list(unrated_df["movieId"])
 
     return [await get_movie_details(id, df_movies) for id in unrated_movie_ids]
 
 
 def get_local_movie_details(id: int) -> MovieBase:
     df = get_local_movie_df()
-    df = df.loc[df['movieId'] == id]
+    df = df.loc[df["movieId"] == id]
     return MovieBase(id=df.values[0][0], title=df.values[0][1])

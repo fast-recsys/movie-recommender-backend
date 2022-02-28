@@ -4,15 +4,18 @@ from app.models.mongo import MongoBaseModel, PyObjectId
 
 from app.models.user_movies import MovieRating
 
+
 class UserBase(MongoBaseModel):
-  pass
+    pass
+
 
 class UserCreateResponse(UserBase):
-  pass
+    pass
+
 
 class UserDB(MongoBaseModel):
-  ratings: List[MovieRating] = Field(default_factory=list)
+    ratings: List[MovieRating] = Field(default_factory=list)
 
 
 class UserPublic(MongoBaseModel):
-  movies_rated_count: int
+    movies_rated_count: int
