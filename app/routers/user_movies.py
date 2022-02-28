@@ -55,6 +55,7 @@ async def get_ratings(user: UserDB = Depends(get_user_or_404)) -> MovieRatingRes
     user_ratings = list(map(make_public_movie_rating, user.ratings))
     return MovieRatingResponse(ratings=user_ratings)
 
+# TODO: replace with get_tmdb_id in data.py
 def id_to_tmdb_id(id: int) -> int:
     df_movies = get_movie_df()
     movie_row = df_movies.loc[df_movies["movieId"] == id]
