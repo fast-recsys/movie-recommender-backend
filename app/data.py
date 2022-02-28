@@ -22,12 +22,18 @@ def get_local_movie_df() -> Any:
     df = pd.read_csv("./app/input/movies.csv")
     return df
 
+
 def get_tmdb_id(id: int, df_movies=Depends(get_movie_df)) -> int:
     movie_row = df_movies.loc[df_movies["movieId"] == id]
     if movie_row.empty:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
     tmdbId = int(movie_row["tmdbId"])
     return tmdbId
+
+@lru_cache
+def get_local_movie_recommendations_df() -> Any:
+    df = pd.read_csv("./app/input/ratings.csv")
+    return df
 
 
 async def get_movie_details_from_tmdb(

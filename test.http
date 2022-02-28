@@ -23,10 +23,17 @@ GET http://localhost:8000/users/random
 
 GET http://localhost:8000/movies/1
 
+{
+	"id": 1,
+	"title": "Toy Story",
+	"thumbnail_url": "https://image.tmdb.org/t/p/w185/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg"
+}
+
 ### Unknown movie
 
 GET http://localhost:8000/movies/0
 
+Now Internal Server Error
 
 ### Get unrated movies
 
