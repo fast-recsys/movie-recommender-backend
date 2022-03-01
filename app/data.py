@@ -7,6 +7,8 @@ import httpx
 from app.config import Settings, get_settings
 
 from app.models.movie import MovieBase, MoviePublic
+from app.models.user import UserDB
+from app.routers.users import get_user_or_404
 
 
 @lru_cache
@@ -59,19 +61,39 @@ async def get_movie_details(
 
     return movie
 
+class MovieDetailFetcher:
+
+    def __init__(self, settings: Settings = Depends(get_settings)):
+        self.settings = settings
+
+    async def __call__(self, movie_id: int) -> MoviePublic:
+
+        movie_df = get_movie_df()
+        tmdb_id = get_tmdb_id(movie_id, movie_df)
+
+        tmdb_movie_details = await get_movie_details_from_tmdb(tmdb_id, self.settings)
+
+        return await get_movie_details(movie_id, tmdb_movie_details)
+
+
+def get_fetcher_instance():
+    return MovieDetailFetcher(get_settings())
+
 
 async def get_unrated_movie_details(
-    movies_rated: List[int], df_movies=get_movie_df() # TODO: use DI here!
+    user: UserDB = Depends(get_user_or_404),
+    df_movies=Depends(get_movie_df),
+    fetcher = Depends(get_fetcher_instance)
 ) -> List[MoviePublic]:
 
-    unrated_df = df_movies[~df_movies["movieId"].isin(movies_rated)]
+    rated_movie_ids = list(map(lambda x: x.movie_id, user.ratings))
+
+    unrated_df = df_movies[~df_movies["movieId"].isin(rated_movie_ids)]
 
     unrated_df = unrated_df.sample(3)
 
     unrated_movie_ids = list(unrated_df["movieId"])
-
-    # FIXME: this doesn't work anymore - get_movie_details signature has changed
-    return [await get_movie_details(id, df_movies) for id in unrated_movie_ids]
+    return [await fetcher(id) for id in unrated_movie_ids]
 
 
 def get_local_movie_details(id: int) -> MovieBase:
