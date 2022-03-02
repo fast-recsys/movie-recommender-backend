@@ -26,9 +26,6 @@ class MockMovieFetcher:
 def get_mock_movie_fetcher():
   return MockMovieFetcher()
 
-app.dependency_overrides[get_movie_df] = mock_get_movie_df
-app.dependency_overrides[get_movie_details_from_tmdb] = mock_get_movie_details_from_tmdb
-app.dependency_overrides[get_fetcher_instance] = get_mock_movie_fetcher
 
 @pytest.fixture(scope="module")
 async def mock_user_id(test_client: AsyncClient):
@@ -45,6 +42,7 @@ async def test_get_unrated_movies(mock_user_id: str, test_client: AsyncClient):
 
   response = await test_client.get(f"/users/{mock_user_id}/unrated")
   assert response.status_code == codes.OK
+
 
 @pytest.mark.asyncio
 async def test_save_movie_ratings(mock_user_id: str, test_client: AsyncClient):
@@ -70,10 +68,10 @@ async def test_save_movie_ratings(mock_user_id: str, test_client: AsyncClient):
   assert current_ratings_count == previous_ratings_count + 2
 
 
-# TODO: implement after removing dependency on `get_movie_details_from_tmdb` in router
-# @pytest.mark.asyncio
-# async def test_recommendations(mock_user_id: str, test_client: AsyncClient):
-#   pass
+@pytest.mark.asyncio
+async def test_recommendations(mock_user_id: str, test_client: AsyncClient):
+  app.dependency_overrides[get_fetcher_instance] = get_mock_movie_fetcher
+  response = await test_client.get(f"users/{mock_user_id}/recommendations")
+  assert response.status_code == codes.OK
 
 
-app.dependency_overrides = {}
