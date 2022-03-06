@@ -86,7 +86,7 @@ async def get_unrated_movie_details(
     fetcher = Depends(get_fetcher_instance)
 ) -> List[MoviePublic]:
 
-    rated_movie_ids = list(map(lambda x: x.movie_id, user.ratings))
+    rated_movie_ids = [x['movie_id'] for x in user.ratings]
 
     unrated_df = df_movies[~df_movies["movieId"].isin(rated_movie_ids)]
 
