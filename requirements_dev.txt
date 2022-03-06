@@ -3,4 +3,5 @@ black
 pylint
 pycodestyle
 # unit-testing
-pytest
+pytest==6.2.4
+pytest-asyncio==0.18.1
