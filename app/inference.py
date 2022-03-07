@@ -1,13 +1,19 @@
+from fastapi import Depends
 import pandas as pd
 from fastai.collab import *
 from fastai.tabular.all import *
 from torch import nn
+from app.models.user import UserDB
 from app.models.user_movies import MovieRating
 from app.data import get_local_movie_recommendations_df
+from app.routers.users import get_user_or_404
 
 learn = load_learner("app/ml_model/movie-recommender.pkl")
 
-def get_recommendations(user_movie_matrix: list[MovieRating]):
+def get_recommendations(user: UserDB = Depends(get_user_or_404)):
+
+    user_movie_matrix = user.ratings
+
     # corresponding to userid get rating
     #calclulate cosine similarity and return top K predictions
     user_ratings_dicts = []

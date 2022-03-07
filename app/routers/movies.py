@@ -7,7 +7,7 @@ from app.models.movie import MoviePublic
 router = APIRouter()
 
 
-@router.get("/{id}", status_code=status.HTTP_201_CREATED)
+@router.get("/{id}")
 async def get_movie_details(
     movie: Optional[MoviePublic] = Depends(get_movie_details),
 ) -> MoviePublic:

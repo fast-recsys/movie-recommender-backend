@@ -30,6 +30,22 @@ To fetch URLs for movie posters, you need to get a free TMDB API key (See: https
 
 See https://developers.themoviedb.org/3/configuration/get-api-configuration for more details about the `TMDB_IMAGES_BASE_URL` key.
 
+### Running tests
+
+Install the project as a package in editable mode:
+
+```
+$ pip install -e .
+```
+
+See [pytest docs](https://docs.pytest.org/en/6.2.x/goodpractices.html) for why this is done.
+
+Run the tests using pytest:
+
+```
+$ pytest
+```
+
 ## Endpoints
 
 ### Create a user
