@@ -1,0 +1,18 @@
+name: Movie Recommender Backend CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      main
+  pull_request: ~
+
+jobs:
+  setup-job:
+    runs-on: ubuntu-20.04
+
+    if: github.repository == 'https://github.com/fast-recsys/movie-recommender-backend'
+
+    steps:
+      - uses: actions/checkout@v3.0.0
+      - run: "true"
