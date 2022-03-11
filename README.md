@@ -142,3 +142,4 @@ The endpoint returns 3 recommendations by default unless an explicit number is s
 ## Todo
 
 - Add latest movies and series not in the MovieLens25 dataset. Collect user ratings for a new user rating dataset with latest movies and series.
+- [Check other approaches for recommenders more complex](https://twitter.com/radekosmulski/status/1496862506324672515)
