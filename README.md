@@ -4,10 +4,10 @@
 
 ## Local Development
 
-Start the server locally:
+### Install dependencies
 
 ```shell
-$ uvicorn app.main:app --reload
+$ pip install -r requirements.txt
 ```
 
 ### Connection to database
@@ -29,6 +29,12 @@ MONGODB_URL="mongodb://localhost:27017"
 To fetch URLs for movie posters, you need to get a free TMDB API key (See: https://developers.themoviedb.org/3/getting-started) and set it as the value for `TMDB_API_KEY` in the `.env` file.
 
 See https://developers.themoviedb.org/3/configuration/get-api-configuration for more details about the `TMDB_IMAGES_BASE_URL` key.
+
+### Start local server
+
+```shell
+$ uvicorn app.main:app --reload
+```
 
 ### Running tests
 
